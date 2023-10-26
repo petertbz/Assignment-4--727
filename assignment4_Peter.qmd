@@ -8,6 +8,11 @@ format:
 editor: source
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE,
+                      message=FALSE, warning=FALSE)
+```
+
 This is an individual assignment. Turn in this assignment as an HTML or PDF file to ELMS. Make sure to include the R Markdown or Quarto file that was used to generate it. Include the GitHub link for the repository containing these files.
 
 ```{r}
@@ -27,7 +32,7 @@ Go to <https://console.cloud.google.com> and make sure you are logged in a non-u
 After you have initialized a project, paste your project ID into the following chunk.
 
 ```{r}
-project <- "surv-727-test"
+project <- "assignment4-727"
 ```
 
 We will connect to a public database, the Chicago crime database, which has data on crime in Chicago.
@@ -56,9 +61,32 @@ Information on the \`crime\` table can be found here:
 
 Write a first query that counts the number of rows of the \`crime\` table in the year 2016. Use code chunks with {sql connection = con} in order to write SQL code within the document.
 
+```{sql connection = con}
+SELECT COUNT(*) AS rownumber
+FROM crime
+WHERE year = 2016;
+```
+
 Next, count the number of arrests grouped by `primary_type` in 2016. Note that is a somewhat similar task as above, with some adjustments on which rows should be considered. Sort the results, i.e. list the number of arrests in a descending order.
 
+```{sql connection = con}
+SELECT primary_type, COUNT(*) AS num_arrests
+FROM crime
+WHERE year = 2016 AND arrest = true
+GROUP BY primary_type
+ORDER BY num_arrests DESC;
+```
+
 We can also use the `date` for grouping. Count the number of arrests grouped by hour of the day in 2016. You can extract the latter information from `date` via `EXTRACT(HOUR FROM date)`. Which time of the day is associated with the most arrests?
+
+```{sql connection = con, max.print = 12}
+SELECT EXTRACT(HOUR FROM date) as hour_of_day, COUNT(*) as num_arrests
+FROM crime
+WHERE year = 2016
+AND arrest = true
+GROUP BY hour_of_day
+ORDER BY hour_of_day ASC;
+```
 
 Focus only on `HOMICIDE` and count the number of arrests for this incident type, grouped by year. List the results in descending order.
 
