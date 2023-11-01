@@ -115,7 +115,7 @@ Lets switch to writing queries from within R via the `DBI` package. Create a que
 ```{r}
 query = "SELECT primary_type, COUNT(arrest) AS num_arrest 
   FROM crime
-  WHERE district = 11 AND year = 2016 
+  WHERE district = 11 AND year = 2016 AND arrest = true
   GROUP BY primary_type 
   ORDER BY num_arrest DESC"
 ```
@@ -136,9 +136,9 @@ crime = tbl(con, sql(crime_query))
 Again, count the number of arrests grouped by `primary_type` of district 11 in year 2016, now using `dplyr` syntax.
 
 ```{r}
-crime %>% filter(district == 11 & year == 2016) %>% 
+crime %>% filter(district == 11 & year == 2016 & arrest == TRUE) %>% 
   group_by(primary_type) %>% 
-  summarise(num_arrest = count(arrest == TRUE)) %>% 
+  summarise(num_arrest = n()) %>% 
   arrange(desc(num_arrest)) %>% 
   kable()
 ```
@@ -146,9 +146,9 @@ crime %>% filter(district == 11 & year == 2016) %>%
 Count the number of arrests grouped by `primary_type` and `year`, still only for district 11. Arrange the result by `year`.
 
 ```{r}
-crime %>% filter(district == 11) %>% 
+crime %>% filter(district == 11 & arrest == TRUE) %>% 
   group_by(primary_type, year) %>% 
-  summarise(num_arrest = count(arrest == TRUE)) %>% 
+  summarise(num_arrest = n()) %>% 
   arrange(year) %>% 
   kable()
 ```
@@ -156,10 +156,10 @@ crime %>% filter(district == 11) %>%
 Assign the results of the query above to a local R object.
 
 ```{r}
-query = crime %>% filter(district == 11) %>% 
+query = crime %>% filter(district == 11 & arrest == TRUE) %>% 
   group_by(primary_type, year) %>% 
-  summarise(num_arrest = count(arrest == TRUE)) %>% 
-  arrange(year)
+  summarise(num_arrest = n()) %>% 
+  arrange(year, num_arrest)
 ```
 
 Confirm that you pulled the data to the local environment by displaying the first ten rows of the saved data set.

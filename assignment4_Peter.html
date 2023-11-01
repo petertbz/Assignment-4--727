@@ -3689,10 +3689,10 @@ vertical-align: -.125em;
 </div>
 </div>
 <p>Lets switch to writing queries from within R via the <code>DBI</code> package. Create a query object that counts the number of arrests grouped by <code>primary_type</code> of district 11 in year 2016. The results should be displayed in descending order.</p>
-<div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-10_8bf6e824b1a0c1275202cb6f4a73a213">
+<div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-10_fbc68b13456c7fea6908392cd586d4b8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>query <span class="ot">=</span> <span class="st">&quot;SELECT primary_type, COUNT(arrest) AS num_arrest </span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM crime</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE district = 11 AND year = 2016 </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE district = 11 AND year = 2016 AND arrest = true</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">  GROUP BY primary_type </span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">  ORDER BY num_arrest DESC&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3846,10 +3846,10 @@ vertical-align: -.125em;
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>crime <span class="ot">=</span> <span class="fu">tbl</span>(con, <span class="fu">sql</span>(crime_query))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Again, count the number of arrests grouped by <code>primary_type</code> of district 11 in year 2016, now using <code>dplyr</code> syntax.</p>
-<div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-13_4953de65798e248a3b1351a23d88e34c">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>crime <span class="sc">%&gt;%</span> <span class="fu">filter</span>(district <span class="sc">==</span> <span class="dv">11</span> <span class="sc">&amp;</span> year <span class="sc">==</span> <span class="dv">2016</span>) <span class="sc">%&gt;%</span> </span>
+<div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-13_1f8255295ce65cc66151e0ae9380d571">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>crime <span class="sc">%&gt;%</span> <span class="fu">filter</span>(district <span class="sc">==</span> <span class="dv">11</span> <span class="sc">&amp;</span> year <span class="sc">==</span> <span class="dv">2016</span> <span class="sc">&amp;</span> arrest <span class="sc">==</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(primary_type) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">num_arrest =</span> <span class="fu">count</span>(arrest <span class="sc">==</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">num_arrest =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(num_arrest)) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -3862,142 +3862,122 @@ vertical-align: -.125em;
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">3906</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">3635</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2043</td>
+<td style="text-align: right;">3634</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">1775</td>
+<td style="text-align: left;">BATTERY</td>
+<td style="text-align: right;">635</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">1330</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">1045</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">1007</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">776</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">609</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">511</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">487</td>
-</tr>
 <tr class="even">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
-<td style="text-align: right;">412</td>
+<td style="text-align: right;">303</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">255</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">206</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">323</td>
+<td style="text-align: right;">205</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">176</td>
+<td style="text-align: right;">135</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">133</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">129</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">101</td>
+<td style="text-align: right;">119</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">95</td>
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">106</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">45</td>
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">98</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">98</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">63</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">56</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">32</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">ARSON</td>
+<tr class="even">
+<td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">28</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">25</td>
+</tr>
 <tr class="even">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">11</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">10</td>
+</tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">10</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: left;">PUBLIC INDECENCY</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
 <td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">HUMAN TRAFFICKING</td>
+<td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OBSCENITY</td>
 <td style="text-align: right;">2</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">PUBLIC INDECENCY</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NON - CRIMINAL</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NON-CRIMINAL</td>
-<td style="text-align: right;">1</td>
-</tr>
 </tbody>
 </table>
 </div>
 </div>
 <p>Count the number of arrests grouped by <code>primary_type</code> and <code>year</code>, still only for district 11. Arrange the result by <code>year</code>.</p>
-<div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-14_9e8f112da2a08bb6a33de30f5adb0a45">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>crime <span class="sc">%&gt;%</span> <span class="fu">filter</span>(district <span class="sc">==</span> <span class="dv">11</span>) <span class="sc">%&gt;%</span> </span>
+<div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-14_be72ac0d5a90f71d1744f97731e42f01">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>crime <span class="sc">%&gt;%</span> <span class="fu">filter</span>(district <span class="sc">==</span> <span class="dv">11</span> <span class="sc">&amp;</span> arrest <span class="sc">==</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(primary_type, year) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">num_arrest =</span> <span class="fu">count</span>(arrest <span class="sc">==</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">num_arrest =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -4011,74 +3991,34 @@ vertical-align: -.125em;
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">BATTERY</td>
+<td style="text-align: left;">ROBBERY</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">5938</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">3098</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">345</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">PROSTITUTION</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">424</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">101</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">GAMBLING</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">71</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: right;">97</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">2193</td>
+<td style="text-align: right;">163</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">1243</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">67</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: right;">19</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">866</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: left;">BURGLARY</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">1183</td>
+<td style="text-align: right;">42</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">515</td>
+<td style="text-align: right;">389</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">NARCOTICS</td>
@@ -4086,164 +4026,154 @@ vertical-align: -.125em;
 <td style="text-align: right;">7978</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">179</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">316</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">2001</td>
-<td style="text-align: right;">128</td>
+<td style="text-align: right;">236</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ARSON</td>
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">47</td>
+<td style="text-align: right;">34</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">RITUALISM</td>
+<td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">12</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">1150</td>
+<td style="text-align: right;">266</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">140</td>
+<td style="text-align: right;">44</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">72</td>
+<td style="text-align: right;">962</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">1667</td>
+<td style="text-align: right;">84</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">419</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PROSTITUTION</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">424</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2001</td>
 <td style="text-align: right;">17</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">GAMBLING</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">71</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">48</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">322</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2001</td>
 <td style="text-align: right;">49</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">KIDNAPPING</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">36</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">1329</td>
+<td style="text-align: right;">4</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">6319</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">163</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">832</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">48</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">37</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">PUBLIC INDECENCY</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2002</td>
 <td style="text-align: right;">645</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">599</td>
+<td style="text-align: right;">453</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">20</td>
+<td style="text-align: right;">3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">11</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">1168</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">323</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">332</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2002</td>
-<td style="text-align: right;">9234</td>
+<td style="text-align: right;">268</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">1282</td>
+<td style="text-align: right;">9232</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">87</td>
+<td style="text-align: right;">242</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">97</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">169</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">98</td>
+<td style="text-align: right;">34</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">71</td>
+<td style="text-align: right;">19</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">124</td>
+<td style="text-align: right;">47</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">GAMBLING</td>
@@ -4251,19 +4181,59 @@ vertical-align: -.125em;
 <td style="text-align: right;">130</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">61</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BATTERY</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">976</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">90</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUBLIC INDECENCY</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">ASSAULT</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">1776</td>
+<td style="text-align: right;">336</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">3054</td>
+<td style="text-align: right;">388</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">2318</td>
+<td style="text-align: right;">196</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -4273,127 +4243,117 @@ vertical-align: -.125em;
 <tr class="odd">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">18</td>
+<td style="text-align: right;">9</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">GAMBLING</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">115</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">144</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">110</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">57</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">767</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">1120</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">2201</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">1097</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">409</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">342</td>
+<td style="text-align: right;">339</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">96</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2003</td>
 <td style="text-align: right;">582</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">82</td>
+</tr>
 <tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">165</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">161</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">71</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">13</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">88</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">BATTERY</td>
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">6100</td>
+<td style="text-align: right;">17</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">THEFT</td>
+<td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">3357</td>
+<td style="text-align: right;">1129</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">1344</td>
+<td style="text-align: right;">395</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">16</td>
+<td style="text-align: right;">392</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">710</td>
+<td style="text-align: right;">558</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">86</td>
+<td style="text-align: right;">29</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">1670</td>
+<td style="text-align: right;">115</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">38</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">328</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2003</td>
 <td style="text-align: right;">9562</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">22</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -4403,232 +4363,202 @@ vertical-align: -.125em;
 <tr class="odd">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">33</td>
+<td style="text-align: right;">29</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">5802</td>
+<td style="text-align: right;">1143</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">41</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">3310</td>
+<td style="text-align: right;">375</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">2004</td>
-<td style="text-align: right;">103</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2004</td>
 <td style="text-align: right;">31</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">42</td>
+<td style="text-align: right;">9</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">27</td>
+<td style="text-align: right;">18</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">13</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2004</td>
-<td style="text-align: right;">1025</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2004</td>
-<td style="text-align: right;">1076</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">725</td>
+<td style="text-align: right;">603</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2004</td>
 <td style="text-align: right;">127</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">1209</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2004</td>
-<td style="text-align: right;">84</td>
+<td style="text-align: right;">212</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">128</td>
+<td style="text-align: right;">39</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">348</td>
+<td style="text-align: right;">151</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">66</td>
+<td style="text-align: right;">108</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: left;">ROBBERY</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">1746</td>
+<td style="text-align: right;">75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">20</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">9085</td>
+<td style="text-align: right;">9083</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: left;">ASSAULT</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">25</td>
+<td style="text-align: right;">375</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">KIDNAPPING</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2004</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2004</td>
-<td style="text-align: right;">2390</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">330</td>
+<td style="text-align: right;">242</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2004</td>
 <td style="text-align: right;">763</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2004</td>
-<td style="text-align: right;">814</td>
-</tr>
 <tr class="odd">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">222</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2004</td>
-<td style="text-align: right;">51</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">674</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">109</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">1544</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">834</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2005</td>
 <td style="text-align: right;">47</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">48</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">163</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">152</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2005</td>
 <td style="text-align: right;">34</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">413</td>
-</tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">2311</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">37</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">36</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OBSCENITY</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">1035</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">5794</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">9724</td>
+<td style="text-align: right;">1044</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">342</td>
+<td style="text-align: right;">9718</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">263</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2005</td>
 <td style="text-align: right;">576</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">79</td>
+</tr>
 <tr class="even">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">73</td>
+<td style="text-align: right;">33</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">KIDNAPPING</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">17</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">1136</td>
+<td style="text-align: right;">254</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -4636,124 +4566,94 @@ vertical-align: -.125em;
 <td style="text-align: right;">29</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">15</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">13</td>
+<td style="text-align: right;">3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">PUBLIC INDECENCY</td>
 <td style="text-align: right;">2005</td>
 <td style="text-align: right;">2</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">THEFT</td>
+<tr class="even">
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">3076</td>
+<td style="text-align: right;">551</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">317</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">22</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">1176</td>
+<td style="text-align: right;">164</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2005</td>
-<td style="text-align: right;">67</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2005</td>
 <td style="text-align: right;">124</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<tr class="even">
+<td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2005</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">375</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">69</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">49</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">108</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">38</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">128</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">11</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">168</td>
+<td style="text-align: right;">167</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">29</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">38</td>
+<td style="text-align: right;">6</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">KIDNAPPING</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">15</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">1030</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">ASSAULT</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">1470</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">1073</td>
+<td style="text-align: right;">304</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">307</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">76</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: right;">212</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -4761,164 +4661,204 @@ vertical-align: -.125em;
 <td style="text-align: right;">42</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">THEFT</td>
+<td style="text-align: left;">ROBBERY</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">3139</td>
+<td style="text-align: right;">91</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">2428</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">69</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">18</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">453</td>
+<td style="text-align: right;">307</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">163</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">549</td>
+<td style="text-align: right;">274</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">382</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STALKING</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">5378</td>
+<td style="text-align: right;">1001</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">1271</td>
+<td style="text-align: right;">152</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">1153</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">8255</td>
+<td style="text-align: right;">1140</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">1042</td>
+<td style="text-align: right;">8185</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">166</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">RITUALISM</td>
 <td style="text-align: right;">2006</td>
 <td style="text-align: right;">1</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">385</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">136</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">79</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">11</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">15</td>
-</tr>
 <tr class="even">
 <td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">520</td>
+<td style="text-align: right;">235</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">2295</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">1080</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">18</td>
+<td style="text-align: right;">225</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ARSON</td>
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">46</td>
+<td style="text-align: right;">160</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">21</td>
+<td style="text-align: right;">20</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">42</td>
+<td style="text-align: right;">24</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OTHER NARCOTIC VIOLATION</td>
+<td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">STALKING</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">7395</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ROBBERY</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">1019</td>
+<td style="text-align: right;">67</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">BURGLARY</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">858</td>
+<td style="text-align: right;">67</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">7406</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">55</td>
+<td style="text-align: right;">12</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">ASSAULT</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">1482</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">3272</td>
+<td style="text-align: right;">293</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">1002</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2007</td>
 <td style="text-align: right;">177</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">356</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">121</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">38</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">240</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">1</td>
+</tr>
 <tr class="even">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">5335</td>
+<td style="text-align: right;">1009</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
@@ -4928,177 +4868,247 @@ vertical-align: -.125em;
 <tr class="even">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">62</td>
+<td style="text-align: right;">56</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">252</td>
+<td style="text-align: right;">186</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2007</td>
-<td style="text-align: right;">98</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">1543</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">1179</td>
+<td style="text-align: right;">51</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">710</td>
+<td style="text-align: right;">406</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PROSTITUTION</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">926</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">88</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">2412</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PROSTITUTION</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">947</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">17</td>
+<td style="text-align: right;">159</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">47</td>
+<td style="text-align: right;">24</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: left;">KIDNAPPING</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">1086</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">5961</td>
+<td style="text-align: right;">5900</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">283</td>
+<td style="text-align: right;">110</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">213</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2008</td>
 <td style="text-align: right;">20</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">40</td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">14</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">35</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">BURGLARY</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">866</td>
+<td style="text-align: right;">67</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">115</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">94</td>
+<td style="text-align: right;">22</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">108</td>
+<td style="text-align: right;">16</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">12</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">298</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">5311</td>
+<td style="text-align: right;">981</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">201</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">245</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">3128</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">349</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">1207</td>
+<td style="text-align: right;">304</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">151</td>
+<td style="text-align: right;">150</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2008</td>
-<td style="text-align: right;">55</td>
+<td style="text-align: right;">13</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2009</td>
-<td style="text-align: right;">103</td>
+<td style="text-align: right;">5941</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2009</td>
-<td style="text-align: right;">1433</td>
+<td style="text-align: right;">68</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">95</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">123</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BATTERY</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">971</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PROSTITUTION</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">369</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">480</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">262</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">249</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUBLIC INDECENCY</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">67</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2009</td>
-<td style="text-align: right;">326</td>
+<td style="text-align: right;">215</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2009</td>
-<td style="text-align: right;">1164</td>
+<td style="text-align: right;">231</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ARSON</td>
+<td style="text-align: left;">ASSAULT</td>
 <td style="text-align: right;">2009</td>
-<td style="text-align: right;">38</td>
+<td style="text-align: right;">341</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
@@ -5106,109 +5116,19 @@ vertical-align: -.125em;
 <td style="text-align: right;">191</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">OBSCENITY</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">764</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">2095</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">5993</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">1026</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">15</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">4876</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2009</td>
 <td style="text-align: right;">5</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">733</td>
-</tr>
 <tr class="odd">
-<td style="text-align: left;">PROSTITUTION</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">370</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">55</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">71</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">56</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">2704</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">126</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">889</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
-<td style="text-align: right;">2009</td>
-<td style="text-align: right;">343</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PUBLIC INDECENCY</td>
+<td style="text-align: left;">OBSCENITY</td>
 <td style="text-align: right;">2009</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2009</td>
-<td style="text-align: right;">47</td>
+<td style="text-align: right;">46</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -5216,54 +5136,24 @@ vertical-align: -.125em;
 <td style="text-align: right;">28</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">989</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">4583</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">2723</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">1811</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2010</td>
 <td style="text-align: right;">154</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">308</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">292</td>
+<td style="text-align: right;">307</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">18</td>
+<td style="text-align: right;">212</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">7</td>
+<td style="text-align: right;">107</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -5271,54 +5161,64 @@ vertical-align: -.125em;
 <td style="text-align: right;">25</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: left;">KIDNAPPING</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">1379</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">936</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: left;">BURGLARY</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">641</td>
+<td style="text-align: right;">77</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">5869</td>
+<td style="text-align: right;">5861</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">1040</td>
+<td style="text-align: right;">241</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">314</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">369</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">49</td>
+<td style="text-align: right;">21</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">990</td>
+<td style="text-align: right;">60</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">96</td>
+<td style="text-align: right;">66</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">89</td>
+<td style="text-align: right;">19</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OBSCENITY</td>
@@ -5326,94 +5226,84 @@ vertical-align: -.125em;
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">132</td>
+<td style="text-align: right;">280</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">BATTERY</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">842</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">316</td>
+<td style="text-align: right;">205</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">38</td>
+<td style="text-align: right;">8</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">64</td>
+<td style="text-align: right;">59</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">25</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">27</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">1347</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">2860</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">5304</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">44</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">40</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">13</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">4293</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">1749</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">894</td>
+<td style="text-align: right;">836</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">99</td>
+<td style="text-align: right;">94</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">408</td>
+<td style="text-align: right;">407</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">136</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">50</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">924</td>
+<td style="text-align: right;">207</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">117</td>
+<td style="text-align: right;">81</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -5428,17 +5318,7 @@ vertical-align: -.125em;
 <tr class="even">
 <td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">84</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">458</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">1021</td>
+<td style="text-align: right;">16</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
@@ -5446,179 +5326,209 @@ vertical-align: -.125em;
 <td style="text-align: right;">107</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">1006</td>
+<td style="text-align: right;">209</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">255</td>
+<td style="text-align: right;">85</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">5301</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">281</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">208</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">6</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">346</td>
+<td style="text-align: right;">239</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">135</td>
+<td style="text-align: right;">183</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">43</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">75</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">34</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2011</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">15</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2011</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">1038</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">4111</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">947</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">935</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">843</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">GAMBLING</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">89</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">39</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OBSCENITY</td>
-<td style="text-align: right;">2012</td>
 <td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">1183</td>
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">112</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">41</td>
+<td style="text-align: right;">29</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">269</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2012</td>
 <td style="text-align: right;">15</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">106</td>
+<td style="text-align: right;">98</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">95</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">2830</td>
+<td style="text-align: right;">67</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">1848</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">5602</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2012</td>
-<td style="text-align: right;">81</td>
+<td style="text-align: right;">5592</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">266</td>
+<td style="text-align: right;">214</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">38</td>
+<td style="text-align: right;">19</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">115</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">1002</td>
+<td style="text-align: right;">215</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BATTERY</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">674</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">215</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">492</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">82</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GAMBLING</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">89</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">293</td>
+<td style="text-align: right;">206</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">530</td>
+<td style="text-align: right;">527</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2012</td>
-<td style="text-align: right;">20</td>
+<td style="text-align: right;">87</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PUBLIC INDECENCY</td>
@@ -5626,19 +5536,109 @@ vertical-align: -.125em;
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">1129</td>
+<td style="text-align: right;">269</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">7249</td>
+<td style="text-align: right;">281</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">179</td>
+<td style="text-align: right;">107</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BATTERY</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">722</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">167</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">71</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">359</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">169</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GAMBLING</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">108</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STALKING</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">73</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LIQUOR LAW VIOLATION</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">230</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">7234</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
@@ -5646,154 +5646,34 @@ vertical-align: -.125em;
 <td style="text-align: right;">347</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">1506</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">344</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">1019</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">36</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OBSCENITY</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">794</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">3846</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">2608</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">178</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">696</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">GAMBLING</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">108</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">679</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">76</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">129</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">38</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">LIQUOR LAW VIOLATION</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">13</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">661</td>
+<td style="text-align: right;">122</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">261</td>
+<td style="text-align: right;">192</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">23</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">300</td>
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">39</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">223</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">90</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">47</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">3619</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">690</td>
+<td style="text-align: right;">711</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: right;">206</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -5801,39 +5681,29 @@ vertical-align: -.125em;
 <td style="text-align: right;">15</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">OTHER NARCOTIC VIOLATION</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">2115</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">150</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">27</td>
+<td style="text-align: right;">38</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">578</td>
+<td style="text-align: right;">183</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">1081</td>
+<td style="text-align: right;">362</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PROSTITUTION</td>
@@ -5843,17 +5713,17 @@ vertical-align: -.125em;
 <tr class="odd">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">224</td>
+<td style="text-align: right;">179</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">233</td>
+<td style="text-align: right;">173</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">7</td>
+<td style="text-align: right;">58</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
@@ -5861,144 +5731,134 @@ vertical-align: -.125em;
 <td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">759</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">1133</td>
+<td style="text-align: right;">218</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">547</td>
+<td style="text-align: right;">212</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">6801</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">245</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">1319</td>
+<td style="text-align: right;">105</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">6804</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2014</td>
 <td style="text-align: right;">85</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">28</td>
+</tr>
 <tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">48</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">54</td>
+<td style="text-align: right;">21</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
 <td style="text-align: right;">2014</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">1257</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">188</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">596</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">40</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">LIQUOR LAW VIOLATION</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OBSCENITY</td>
-<td style="text-align: right;">2015</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">98</td>
+<td style="text-align: right;">13</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">148</td>
+<td style="text-align: right;">35</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">3629</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">469</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">1856</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">273</td>
+<td style="text-align: right;">704</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">5670</td>
+<td style="text-align: right;">5668</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">1077</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">588</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">330</td>
+<td style="text-align: right;">74</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">413</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">219</td>
+<td style="text-align: right;">172</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">191</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">536</td>
+<td style="text-align: right;">535</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">196</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">146</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">49</td>
+<td style="text-align: right;">22</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
@@ -6006,29 +5866,9 @@ vertical-align: -.125em;
 <td style="text-align: right;">54</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: left;">BURGLARY</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NON - CRIMINAL</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">20</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">13</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
@@ -6036,104 +5876,94 @@ vertical-align: -.125em;
 <td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2015</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">869</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">1533</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">HUMAN TRAFFICKING</td>
+<td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2015</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">177</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">284</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">609</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">68</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">412</td>
+<td style="text-align: left;">LIQUOR LAW VIOLATION</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">12</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">323</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">95</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HUMAN TRAFFICKING</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">3906</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">487</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2016</td>
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2015</td>
 <td style="text-align: right;">9</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">1</td>
+</tr>
 <tr class="even">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">107</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">73</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BATTERY</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">635</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2016</td>
 <td style="text-align: right;">11</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">22</td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;">INTIMIDATION</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OBSCENITY</td>
 <td style="text-align: right;">2016</td>
 <td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">THEFT</td>
+<td style="text-align: left;">OBSCENITY</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">2043</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">3634</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">119</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">1775</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">3635</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">129</td>
+<td style="text-align: right;">106</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">GAMBLING</td>
@@ -6143,300 +5973,270 @@ vertical-align: -.125em;
 <tr class="odd">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">45</td>
+<td style="text-align: right;">10</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">98</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NON-CRIMINAL</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">1045</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2016</td>
 <td style="text-align: right;">511</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">28</td>
-</tr>
 <tr class="odd">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">255</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">PUBLIC INDECENCY</td>
 <td style="text-align: right;">2016</td>
 <td style="text-align: right;">2</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
 <td style="text-align: right;">2016</td>
 <td style="text-align: right;">2</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">NON - CRIMINAL</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">1</td>
-</tr>
 <tr class="even">
-<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">1330</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">776</td>
+<td style="text-align: right;">303</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">205</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">63</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">ROBBERY</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">1007</td>
+<td style="text-align: right;">56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">98</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">206</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">135</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">133</td>
+<td style="text-align: right;">25</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2016</td>
-<td style="text-align: right;">101</td>
+<td style="text-align: right;">10</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">2016</td>
-<td style="text-align: right;">176</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">644</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">487</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">74</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OTHER NARCOTIC VIOLATION</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">3735</td>
+<td style="text-align: right;">643</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">ASSAULT</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">1362</td>
+<td style="text-align: right;">248</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">291</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">709</td>
+<td style="text-align: right;">62</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">1649</td>
+<td style="text-align: right;">119</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">1023</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">ROBBERY</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">946</td>
+<td style="text-align: right;">47</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">144</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">81</td>
+<td style="text-align: right;">30</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">480</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">384</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2017</td>
 <td style="text-align: right;">325</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2017</td>
 <td style="text-align: right;">76</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
 <td style="text-align: right;">2017</td>
 <td style="text-align: right;">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">152</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">3408</td>
+<td style="text-align: right;">121</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">3407</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">478</td>
+<td style="text-align: right;">346</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">38</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">NON-CRIMINAL (SUBJECT SPECIFIED)</td>
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
 <td style="text-align: right;">2017</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">6</td>
+<td style="text-align: right;">56</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: left;">BURGLARY</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">22</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">THEFT</td>
+<td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">2005</td>
+<td style="text-align: right;">13</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">156</td>
+<td style="text-align: right;">145</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">48</td>
+<td style="text-align: right;">116</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2017</td>
 <td style="text-align: right;">9</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">4</td>
-</tr>
 <tr class="even">
 <td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2017</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">457</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">175</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HOMICIDE</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">73</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OBSCENITY</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2018</td>
 <td style="text-align: right;">74</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2018</td>
-<td style="text-align: right;">61</td>
+<td style="text-align: right;">12</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2018</td>
 <td style="text-align: right;">18</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">23</td>
-</tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">1674</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2018</td>
-<td style="text-align: right;">4102</td>
+<td style="text-align: right;">4101</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">105</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2018</td>
-<td style="text-align: right;">649</td>
+<td style="text-align: right;">497</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2018</td>
-<td style="text-align: right;">141</td>
+<td style="text-align: right;">28</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">31</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
 <td style="text-align: right;">2018</td>
-<td style="text-align: right;">88</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">4</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
 <td style="text-align: right;">2018</td>
 <td style="text-align: right;">5</td>
 </tr>
@@ -6446,134 +6246,124 @@ vertical-align: -.125em;
 <td style="text-align: right;">8</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">972</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">2133</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">583</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">1018</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">STALKING</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">11</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">3816</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">1406</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">647</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">176</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PROSTITUTION</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">420</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">500</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2018</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NON-CRIMINAL (SUBJECT SPECIFIED)</td>
+<td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2018</td>
 <td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">732</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">966</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">633</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">197</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">137</td>
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">92</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">38</td>
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">140</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">308</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">138</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HOMICIDE</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">213</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BATTERY</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">585</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">173</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PROSTITUTION</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">420</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">26</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NON-CRIMINAL (SUBJECT SPECIFIED)</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ASSAULT</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">1224</td>
+<td style="text-align: right;">201</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">52</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2019</td>
 <td style="text-align: right;">37</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
+<tr class="even">
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
 <td style="text-align: right;">2019</td>
 <td style="text-align: right;">7</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">INTIMIDATION</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">1422</td>
+<td style="text-align: right;">95</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">355</td>
+<td style="text-align: right;">211</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">181</td>
+<td style="text-align: right;">173</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OBSCENITY</td>
@@ -6583,192 +6373,152 @@ vertical-align: -.125em;
 <tr class="odd">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">3669</td>
+<td style="text-align: right;">621</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">612</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2019</td>
 <td style="text-align: right;">414</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">118</td>
+</tr>
 <tr class="even">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">177</td>
+<td style="text-align: right;">151</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">HUMAN TRAFFICKING</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2019</td>
 <td style="text-align: right;">10</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">THEFT</td>
+<tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">2000</td>
+<td style="text-align: right;">49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">4</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">237</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">47</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2019</td>
 <td style="text-align: right;">4782</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">44</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">382</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">64</td>
-</tr>
 <tr class="even">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">677</td>
+<td style="text-align: right;">543</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">6</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">111</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">10</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">74</td>
+<td style="text-align: right;">20</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">BURGLARY</td>
 <td style="text-align: right;">2019</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">1119</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">2577</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">102</td>
+<td style="text-align: right;">17</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIM SEXUAL ASSAULT</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">RITUALISM</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">3232</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">697</td>
+<td style="text-align: right;">457</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">244</td>
+<td style="text-align: right;">118</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: right;">36</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">1514</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2020</td>
 <td style="text-align: right;">169</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">OTHER OFFENSE</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">697</td>
+<td style="text-align: right;">124</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">85</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">164</td>
+<td style="text-align: right;">63</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ARSON</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">52</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">341</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">1555</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">840</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">103</td>
+<td style="text-align: right;">38</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">541</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2020</td>
 <td style="text-align: right;">2</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2020</td>
 <td style="text-align: right;">16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">17</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
@@ -6776,9 +6526,19 @@ vertical-align: -.125em;
 <td style="text-align: right;">14</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">56</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">34</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OBSCENITY</td>
@@ -6786,59 +6546,59 @@ vertical-align: -.125em;
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">2577</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">129</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">870</td>
+<td style="text-align: right;">686</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2020</td>
-<td style="text-align: right;">75</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2020</td>
-<td style="text-align: right;">67</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">2396</td>
+<td style="text-align: right;">61</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">SEX OFFENSE</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">43</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HUMAN TRAFFICKING</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">2888</td>
+<td style="text-align: right;">343</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">1361</td>
+<td style="text-align: right;">31</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">KIDNAPPING</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">47</td>
+<td style="text-align: right;">19</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OBSCENITY</td>
@@ -6848,52 +6608,42 @@ vertical-align: -.125em;
 <tr class="even">
 <td style="text-align: left;">MOTOR VEHICLE THEFT</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">601</td>
+<td style="text-align: right;">27</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">761</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2021</td>
 <td style="text-align: right;">67</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">138</td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">90</td>
+<td style="text-align: right;">6</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">106</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">658</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">525</td>
+<td style="text-align: right;">27</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">WEAPONS VIOLATION</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">957</td>
+<td style="text-align: right;">700</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">270</td>
+<td style="text-align: right;">16</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
+<td style="text-align: left;">ROBBERY</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">160</td>
+<td style="text-align: right;">36</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -6903,222 +6653,252 @@ vertical-align: -.125em;
 <tr class="odd">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">38</td>
+<td style="text-align: right;">33</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: left;">BURGLARY</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">9</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">12</td>
+<td style="text-align: right;">57</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">2372</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SEX OFFENSE</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">96</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">1545</td>
+<td style="text-align: right;">57</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">1248</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2021</td>
-<td style="text-align: right;">102</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ARSON</td>
-<td style="text-align: right;">2021</td>
-<td style="text-align: right;">60</td>
+<td style="text-align: right;">11</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">1171</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">1662</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">1135</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">284</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">684</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">PROSTITUTION</td>
 <td style="text-align: right;">2022</td>
 <td style="text-align: right;">212</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">85</td>
-</tr>
 <tr class="odd">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">56</td>
+<td style="text-align: right;">6</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">7</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
 <td style="text-align: right;">2022</td>
 <td style="text-align: right;">7</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
 <td style="text-align: right;">2022</td>
 <td style="text-align: right;">4</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">140</td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;">CRIMINAL DAMAGE</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">1548</td>
+<td style="text-align: right;">73</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">467</td>
+<td style="text-align: right;">11</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">744</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">GAMBLING</td>
 <td style="text-align: right;">2022</td>
 <td style="text-align: right;">1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">2681</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">1450</td>
+<td style="text-align: right;">339</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
+<td style="text-align: left;">NARCOTICS</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">88</td>
+<td style="text-align: right;">1428</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">23</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">38</td>
+<td style="text-align: right;">34</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: left;">STALKING</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">791</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">84</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">THEFT</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">37</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">538</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">170</td>
+<td style="text-align: right;">45</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">77</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">49</td>
+<td style="text-align: right;">25</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ARSON</td>
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">35</td>
+<td style="text-align: right;">18</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">ARSON</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">OBSCENITY</td>
 <td style="text-align: right;">2022</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">KIDNAPPING</td>
-<td style="text-align: right;">2022</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">KIDNAPPING</td>
+<td style="text-align: left;">BATTERY</td>
 <td style="text-align: right;">2023</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: right;">291</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">WEAPONS VIOLATION</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">582</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NARCOTICS</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">1235</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">PROSTITUTION</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">139</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">55</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">78</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">73</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ARSON</td>
+<td style="text-align: left;">CRIMINAL TRESPASS</td>
 <td style="text-align: right;">2023</td>
 <td style="text-align: right;">42</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">STALKING</td>
+<td style="text-align: left;">THEFT</td>
 <td style="text-align: right;">2023</td>
-<td style="text-align: right;">16</td>
+<td style="text-align: right;">25</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">INTIMIDATION</td>
+<td style="text-align: left;">DECEPTIVE PRACTICE</td>
 <td style="text-align: right;">2023</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BURGLARY</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OTHER OFFENSE</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">172</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ROBBERY</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ASSAULT</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">101</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL DAMAGE</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NARCOTICS</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">1197</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PROSTITUTION</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">139</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PUBLIC PEACE VIOLATION</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">WEAPONS VIOLATION</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">397</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OFFENSE INVOLVING CHILDREN</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">8</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CONCEALED CARRY LICENSE VIOLATION</td>
@@ -7126,74 +6906,24 @@ vertical-align: -.125em;
 <td style="text-align: right;">4</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">OBSCENITY</td>
+<td style="text-align: left;">STALKING</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRIMINAL SEXUAL ASSAULT</td>
 <td style="text-align: right;">2023</td>
 <td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BATTERY</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">2306</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">THEFT</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">1324</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">BURGLARY</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">189</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DECEPTIVE PRACTICE</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">391</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL TRESPASS</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">144</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MOTOR VEHICLE THEFT</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">1225</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">OTHER OFFENSE</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">590</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">INTERFERENCE WITH PUBLIC OFFICER</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">45</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ROBBERY</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">710</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ASSAULT</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">1071</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CRIMINAL DAMAGE</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">1197</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HOMICIDE</td>
 <td style="text-align: right;">2023</td>
-<td style="text-align: right;">67</td>
+<td style="text-align: right;">14</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">SEX OFFENSE</td>
 <td style="text-align: right;">2023</td>
-<td style="text-align: right;">47</td>
+<td style="text-align: right;">4</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LIQUOR LAW VIOLATION</td>
@@ -7205,11 +6935,11 @@ vertical-align: -.125em;
 </div>
 </div>
 <p>Assign the results of the query above to a local R object.</p>
-<div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-15_5628b58c57332c64fa2ed1ae1532a698">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>query <span class="ot">=</span> crime <span class="sc">%&gt;%</span> <span class="fu">filter</span>(district <span class="sc">==</span> <span class="dv">11</span>) <span class="sc">%&gt;%</span> </span>
+<div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-15_d9c5ff3b6fe1d86699222053249438b2">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>query <span class="ot">=</span> crime <span class="sc">%&gt;%</span> <span class="fu">filter</span>(district <span class="sc">==</span> <span class="dv">11</span> <span class="sc">&amp;</span> arrest <span class="sc">==</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(primary_type, year) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">num_arrest =</span> <span class="fu">count</span>(arrest <span class="sc">==</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">num_arrest =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year, num_arrest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Confirm that you pulled the data to the local environment by displaying the first ten rows of the saved data set.</p>
 <div class="cell" data-hash="assignment4_Peter_cache/html/unnamed-chunk-16_8c7a021c8f85a5066818c83897c57907">
