@@ -90,6 +90,8 @@ GROUP BY hour_of_day
 ORDER BY hour_of_day ASC;
 ```
 
+10 is the time of the day associated with the most arrests.
+
 Focus only on `HOMICIDE` and count the number of arrests for this incident type, grouped by year. List the results in descending order.
 
 ```{sql connection = con, max.print = -1}
